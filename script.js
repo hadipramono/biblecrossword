@@ -56,6 +56,11 @@ function HideAnswer(){
 
 function Create(){  
   var dataCrossword = $('#data').val();
+
+  if (dataCrossword == 'gpt') {
+    alert('Fitur ini belum tersedia.');
+  }
+
   CreateClue(dataCrossword)
   if (mode === 0){
     ToggleInputBoxes(true);
@@ -80,7 +85,7 @@ function CreateClue(dataCrossword) {
   $.getJSON('./data/' + dataCrossword + '.json', function(arr) {
     wordArr = [];
     $.each( arr, function( i, value ){
-      console.log(value.clue);
+      //console.log(value.clue);
       val_word = value.word.toUpperCase();
       val_clue = value.clue;
       $( "#clue" ).append( "<div class='line'><span class='clue'>" + val_clue + "</span> <span class='word hide'>[<b>" + val_word + "</b>]</span></div>" );
@@ -111,7 +116,7 @@ function GetWordsFromInput(dataCrossword){
   $.getJSON('./data/' + dataCrossword + '.json', function(arr) {
     wordArr = [];
     $.each( arr, function( i, value ){
-      console.log(value.word);
+      //console.log(value.word);
       val = value.word.toUpperCase();
       if (val !== null && val.length > 1){wordArr.push(val);}
     });
