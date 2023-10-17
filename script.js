@@ -22,7 +22,6 @@ var Bounds = {
   }
 };
 
-
 //---------------------------------//
 //   MAIN                          //
 //---------------------------------//
@@ -38,15 +37,33 @@ function Play(){
   ToggleInputBoxes(false);
 }
 
+function ShowAnswer(){
+  var w=document.getElementsByClassName('word');
 
-function Create(){
+  for(var i=0;i<w.length; i++){
+    RemoveClass(w[i], 'hide');
+  }
+}
+
+function HideAnswer(){
+  var w=document.getElementsByClassName('word');
+
+  for(var i=0;i<w.length; i++){
+    AddClass(w[i], 'hide');
+  }
+}
+
+
+function Create(){  
+  var dataCrossword = $('#data').val();
+  CreateClue(dataCrossword)
   if (mode === 0){
     ToggleInputBoxes(true);
     document.getElementById("crossword").innerHTML = BoardToHtml(" ")
     mode = 1;
   }
   else{  
-    GetWordsFromInput();
+    GetWordsFromInput(dataCrossword);
 
     for(var i = 0, isSuccess=false; i < 10 && !isSuccess; i++){
       CleanVars();
@@ -58,6 +75,18 @@ function Create(){
   }
 }
 
+function CreateClue(dataCrossword) {
+  $( "#clue" ).children().remove();
+  $.getJSON('./data/data' + dataCrossword + '.json', function(arr) {
+    wordArr = [];
+    $.each( arr, function( i, value ){
+      console.log(value.clue);
+      val_word = value.word.toUpperCase();
+      val_clue = value.clue.toUpperCase();
+      $( "#clue" ).append( "<div class='line'><input class='word hide' type='text' value='" + val_word + "' readonly /><input class='clue' value='" + val_clue + "' readonly /></div>" );
+    });
+  });
+}
 
 function ToggleInputBoxes(active){
   var w=document.getElementsByClassName('word'),
@@ -78,12 +107,15 @@ function ToggleInputBoxes(active){
 }
 
 
-function GetWordsFromInput(){
-  wordArr = [];  
-  for(var i=0,val,w=document.getElementsByClassName("word");i<w.length;i++){
-    val = w[i].value.toUpperCase();
-    if (val !== null && val.length > 1){wordArr.push(val);}
-  }
+function GetWordsFromInput(dataCrossword){
+  $.getJSON('./data/data' + dataCrossword + '.json', function(arr) {
+    wordArr = [];
+    $.each( arr, function( i, value ){
+      console.log(value.word);
+      val = value.word.toUpperCase();
+      if (val !== null && val.length > 1){wordArr.push(val);}
+    });
+  });
 }
 
 
@@ -324,6 +356,8 @@ function RegisterEvents(){
     return false; }
   document.getElementById("btnCreate").addEventListener('click',Create,false);
   document.getElementById("btnPlay").addEventListener('click',Play,false);
+  document.getElementById("btnShowAnswer").addEventListener('click',ShowAnswer,false);
+  document.getElementById("btnHideAnswer").addEventListener('click',HideAnswer,false);
 }
 RegisterEvents();
 
