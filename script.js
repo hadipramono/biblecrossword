@@ -77,13 +77,13 @@ function Create(){
 
 function CreateClue(dataCrossword) {
   $( "#clue" ).children().remove();
-  $.getJSON('./data/data' + dataCrossword + '.json', function(arr) {
+  $.getJSON('./data/' + dataCrossword + '.json', function(arr) {
     wordArr = [];
     $.each( arr, function( i, value ){
       console.log(value.clue);
       val_word = value.word.toUpperCase();
-      val_clue = value.clue.toUpperCase();
-      $( "#clue" ).append( "<div class='line'><input class='word hide' type='text' value='" + val_word + "' readonly /><input class='clue' value='" + val_clue + "' readonly /></div>" );
+      val_clue = value.clue;
+      $( "#clue" ).append( "<div class='line'><span class='clue'>" + val_clue + "</span> <span class='word hide'>[<b>" + val_word + "</b>]</span></div>" );
     });
   });
 }
@@ -108,7 +108,7 @@ function ToggleInputBoxes(active){
 
 
 function GetWordsFromInput(dataCrossword){
-  $.getJSON('./data/data' + dataCrossword + '.json', function(arr) {
+  $.getJSON('./data/' + dataCrossword + '.json', function(arr) {
     wordArr = [];
     $.each( arr, function( i, value ){
       console.log(value.word);

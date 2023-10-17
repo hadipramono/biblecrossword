@@ -11,10 +11,13 @@
 <div class="container">
 	
 	<select class="btn" name="data" id="data">
-		<option value="1">TTS 1</option>
-		<option value="2">TTS 2</option>
-		<option value="3">TTS 3</option>
-		<option value="gpt">Generate dg ChatGPT on the fly</option>
+		<?php
+			require_once('./data.php');
+			foreach ($data_sources as $val) {
+				echo "<option value='{$val['ksource']}'>{$val['vsource']}</option>";
+			}
+		?>
+		<option value="gpt">Generate Lainnya</option>
 	</select> 
 	
 	  <button class="btn" id="btnCreate">Create</button>
@@ -25,7 +28,7 @@
   <div class="center crossword" id="crossword"></div><br/>
 
   
-  <div class="center">
+  <div class="">
   		<div style="padding: 10px;">
 			<button class="btn" id="btnShowAnswer">Show Answer</button>
 			<button class="btn" id="btnHideAnswer">Hide Answer</button>
